@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>3Dシューティング：機体選択</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div id="game"></div>
+
+  <!-- HUD -->
+  <div id="hud" hidden>
+    <div class="row">SCORE：<span id="score">0</span></div>
+    <div class="row">HP
+      <div class="bar" style="width:160px;"><span id="hpbar"></span></div>
+      <span id="hptext" class="muted"></span>
+    </div>
+    <div class="row" id="energyRow">ENERGY
+      <div class="bar" style="width:160px;"><span id="enbar"></span></div>
+      <span id="entext" class="muted"></span>
+    </div>
+    <div class="row muted">操作：<span class="kbd">WASD / ←→↑↓</span>で移動、<span class="kbd">Space/クリック</span>でレーザー（TYPE-A）。</div>
+  </div>
+
+  <!-- MENU -->
+  <div id="menu">
+    <div class="panel">
+      <div class="title">機体選択</div>
+      <div class="muted">ひとつ選んでから開始してください。</div>
+      <div class="grid" id="choices"></div>
+      <div id="desc" class="muted"></div>
+      <div class="btns">
+        <button id="startBtn" disabled>ゲーム開始</button>
+        <button class="secondary" id="how">操作説明</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- OVERLAY -->
+  <div id="overlay">
+    <div class="panel">
+      <div id="overTitle" class="big">GAME OVER</div>
+      <div class="muted" id="finalScore"></div>
+      <div class="btns" style="justify-content:center; margin-top:8px;">
+        <button id="restart">もう一度</button>
+        <button class="secondary" onclick="location.reload()">機体を選び直す</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- three.js（グローバル） -->
+  <script src="https://unpkg.com/three@0.157.0/build/three.min.js"></script>
+  <!-- エントリーポイント -->
+  <script src="./src/main.js"></script>
+</body>
+</html>

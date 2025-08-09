@@ -1,0 +1,37 @@
+:root { --bg:#0a0d14; --fg:#e6f0ff; --acc:#61dafb; --mut:#8aa0b3; }
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#000;color:var(--fg);
+  font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial}
+#game{position:fixed;inset:0}
+#hud{position:fixed;left:12px;top:12px;z-index:10;font-size:14px;line-height:1.4;
+  background:rgba(10,13,20,.5);backdrop-filter:blur(4px);
+  border:1px solid rgba(255,255,255,.06);padding:10px 12px;border-radius:10px;min-width:230px}
+#hud .row{display:flex;align-items:center;gap:8px;margin:4px 0}
+.bar{height:8px;background:#1b2330;border-radius:6px;overflow:hidden;width:150px;
+  border:1px solid rgba(255,255,255,.05)}
+.bar>span{display:block;height:100%;width:0%;
+  background:linear-gradient(90deg,#5eead4,#22d3ee)}
+#score{font-weight:700;color:var(--acc);letter-spacing:.5px}
+#menu,#overlay{position:fixed;inset:0;display:grid;place-items:center;z-index:20;
+  background:radial-gradient(1200px 600px at 50% 20%, rgba(97,218,251,.12), rgba(0,0,0,.85))}
+.panel{width:min(900px,92vw);background:rgba(10,13,20,.76);
+  border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px;
+  box-shadow:0 10px 40px rgba(0,0,0,.4)}
+.title{font-size:20px;color:var(--acc);margin-bottom:8px}
+.muted{color:var(--mut);font-size:13px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin:16px 0}
+.card{background:linear-gradient(180deg,rgba(255,255,255,.04),rgba(255,255,255,.01));
+  border:1px solid rgba(255,255,255,.08);border-radius:14px;padding:14px;cursor:pointer;
+  transition:transform .12s,border-color .12s,background .12s}
+.card:hover{transform:translateY(-2px);border-color:rgba(97,218,251,.5)}
+.card.selected{border-color:var(--acc);box-shadow:0 0 0 2px rgba(97,218,251,.35) inset}
+.btns{display:flex;gap:10px;flex-wrap:wrap}
+button{appearance:none;border:none;padding:10px 14px;border-radius:10px;cursor:pointer;font-weight:600;
+  background:var(--acc);color:#001018}
+button.secondary{background:transparent;color:var(--fg);border:1px solid rgba(255,255,255,.16)}
+button:disabled{opacity:.5;cursor:not-allowed}
+#overlay{display:none;background:rgba(0,0,0,.75)}
+#overlay .panel{text-align:center}
+.big{font-size:28px;margin:6px 0 12px}
+.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  background:#0e1521;border:1px solid rgba(255,255,255,.12);padding:2px 6px;border-radius:6px;font-size:12px}
