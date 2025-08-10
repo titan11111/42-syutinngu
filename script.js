@@ -205,8 +205,14 @@ function addEvents(){
   window.addEventListener('mouseup',   ()=>{ mouseDown = false; });
 
   // タッチ簡易対応
-  window.addEventListener('touchstart', ()=>{ if (playerStats?.type==='laser') mouseDown=true; }, {passive:true});
-  window.addEventListener('touchend',   ()=>{ mouseDown=false; }, {passive:true});
+  window.addEventListener('touchstart', (e)=>{
+    if (playerStats?.type==='laser') mouseDown=true;
+    e.preventDefault();
+  }, {passive:false});
+  window.addEventListener('touchend',   (e)=>{
+    mouseDown=false;
+    e.preventDefault();
+  }, {passive:false});
   window.addEventListener('touchmove', (e)=>{
     if (!running) return;
     const t = e.touches[0]; if (!t) return;
@@ -214,7 +220,8 @@ function addEvents(){
     const dy = (t.clientY / window.innerHeight - 0.5) * -2;
     player.position.x = dx * playerStats.bounds.x;
     player.position.y = dy * playerStats.bounds.y;
-  }, {passive:true});
+    e.preventDefault();
+  }, {passive:false});
 }
 
 function onResize(){
