@@ -358,7 +358,7 @@ function updateEnemies(dt){
 
     const dToPlayer = e.position.distanceTo(player.position);
     if (dToPlayer < (e.userData.r + 1.8)) { damagePlayer(18); destroyEnemy(e, false); continue; }
-    if (e.position.z > camera.position.z + 4) { damagePlayer(12); destroyEnemy(e, false); }
+    if (e.position.z > camera.position.z + 4) { destroyEnemy(e, false); }
   }
 }
 
