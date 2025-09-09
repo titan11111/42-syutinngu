@@ -74,6 +74,7 @@ document.getElementById('restart').addEventListener('click', ()=> location.reloa
 let scene, camera, renderer, clock;
 let player, playerCore, playerStats, keys = {}, mouseDown = false;
 let bullets = [], enemies = [], fx = [];
+let bossSpawned = false;
 let lastShot = 0, score = 0, running = true;
 let starField;
 let laserLine = null, raycaster = new THREE.Raycaster();
@@ -101,6 +102,7 @@ function startGame(typeKey){
   addEvents();
 
   running = true;
+  setTimeout(() => { if (running && !bossSpawned) spawnBoss(); }, 60000);
   animate();
 }
 
@@ -195,6 +197,35 @@ function spawnEnemy(){
   };
   enemies.push(m);
   scene.add(m);
+}
+
+function spawnBoss(){
+  bossSpawned = true;
+  const mat = new THREE.MeshStandardMaterial({ color: 0xff4444, metalness:.3, roughness:.7, emissive:0x220000, emissiveIntensity:.6 });
+  const boss = new THREE.Group();
+  const body = new THREE.Mesh(new THREE.BoxGeometry(3, 2.5, 1), mat);
+  boss.add(body);
+  const legGeo = new THREE.BoxGeometry(0.8, 0.2, 0.2);
+  for (let i=0;i<4;i++) {
+    const y = (i-1.5)*0.6;
+    const legL = new THREE.Mesh(legGeo, mat);
+    legL.position.set(-1.6, y, -0.5);
+    boss.add(legL);
+    const legR = legL.clone();
+    legR.position.x = 1.6;
+    boss.add(legR);
+  }
+  const clawGeo = new THREE.BoxGeometry(1,0.6,0.6);
+  const clawL = new THREE.Mesh(clawGeo, mat);
+  clawL.position.set(-2.2, 1.2, 0);
+  boss.add(clawL);
+  const clawR = clawL.clone();
+  clawR.position.x = 2.2;
+  boss.add(clawR);
+  boss.position.set(0, 0, -260);
+  boss.userData = { hp:100, speed:10, r:1.8, isBoss:true };
+  enemies.push(boss);
+  scene.add(boss);
 }
 
 function addEvents(){
@@ -335,7 +366,7 @@ function updateBullets(dt){
       const e = enemies[j];
       const dist = b.position.distanceTo(e.position);
       if (dist < (e.userData.r + 0.7)) {
-        e.userData.hp -= b.userData.dmg;
+        e.userData.hp -= e.userData.isBoss ? 1 : b.userData.dmg;
         spawnSpark(b.position);
         scene.remove(b); bullets.splice(i,1);
         if (e.userData.hp <= 0) destroyEnemy(e, true);
@@ -348,13 +379,17 @@ function updateBullets(dt){
 function updateEnemies(dt){
   for (let i=enemies.length-1;i>=0;i--){
     const e = enemies[i];
-    e.userData.sinX += dt*2;
-    e.userData.sinY += dt*2.3;
-    e.position.z += e.userData.speed * dt;
-    e.position.x += Math.sin(e.userData.sinX)*8*dt;
-    e.position.y += Math.sin(e.userData.sinY)*6*dt;
-    e.rotation.x += dt*1.2;
-    e.rotation.y += dt*0.8;
+    if (e.userData.isBoss) {
+      e.position.z += e.userData.speed * dt;
+    } else {
+      e.userData.sinX += dt*2;
+      e.userData.sinY += dt*2.3;
+      e.position.z += e.userData.speed * dt;
+      e.position.x += Math.sin(e.userData.sinX)*8*dt;
+      e.position.y += Math.sin(e.userData.sinY)*6*dt;
+      e.rotation.x += dt*1.2;
+      e.rotation.y += dt*0.8;
+    }
 
     const dToPlayer = e.position.distanceTo(player.position);
     if (dToPlayer < (e.userData.r + 1.8)) { damagePlayer(18); destroyEnemy(e, false); continue; }
